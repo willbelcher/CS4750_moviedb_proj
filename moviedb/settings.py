@@ -80,12 +80,12 @@ with open('./credentials', 'r') as f:
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'moviedb',
         'USER': creds['user'],
         'PASSWORD': creds['password'],
-        'HOST': 'cs4750-mediadb-412918:us-east4:cs4750mysql',
-        'PORT': '5432',
+        'HOST': '34.48.57.82',
+        # 'PORT': '5432',
     }
     
 }
