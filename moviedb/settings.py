@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -73,8 +74,19 @@ WSGI_APPLICATION = 'moviedb.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
+# Django has this built-in but works for now
+with open('./credentials', 'r') as f:
+    creds = json.loads(f.read())
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'moviedb',
+        'USER': creds['user'],
+        'PASSWORD': creds['password'],
+        'HOST': 'cs4750-mediadb-412918:us-east4:cs4750mysql',
+        'PORT': '5432',
+    }
     
 }
 
