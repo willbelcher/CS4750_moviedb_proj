@@ -14,8 +14,8 @@ def movie_search(request):
 
 
 def handle_login(request):
-    email = request.POST["email"]
-    password = request.POST["password"]
+    email = request.POST.get("email", None)
+    password = request.POST.get("password", None)
 
     user = authenticate(request, username=email, password=password)
 
@@ -28,6 +28,10 @@ def handle_login(request):
 def login_view(request):
 
     return render(request, 'mainapp/login.html')
+
+def create_user(request):
+
+    return 
 
 
 def handle_logout(request):
