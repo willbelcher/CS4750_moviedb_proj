@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from mainapp import db_utils
@@ -41,7 +42,9 @@ def create_account(request):
     name = request.POST['name']
     password = request.POST["password"]
 
-    success = db_utils.add_user(email, name, password)
+    hashed_password = make_password(password)
+
+    success = db_utils.add_user(email, name, hashed_password)
 
     if not success:
         return redirect('mainapp:create_account')

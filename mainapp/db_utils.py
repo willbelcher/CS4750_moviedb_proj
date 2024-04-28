@@ -14,6 +14,8 @@ def get_user(email):
     
     return None
 
+
+# returns true user does not already exist
 def add_user(email, name, password):
     with connection.cursor() as cursor:
         cursor.execute("SELECT COUNT(*) FROM user WHERE email=%s", [email])
