@@ -15,7 +15,7 @@
                 <header>MovieDB</header>
             </div>
             
-            <form class="login" method="POST" action="{% url 'mainapp:add_user' %}">
+            <form class="login" method="POST" action="{% url 'mainapp:add_account' %}">
                 {% csrf_token %}
 
                 <!-- Email Field -->
