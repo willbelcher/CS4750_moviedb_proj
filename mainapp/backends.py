@@ -1,6 +1,5 @@
 from django.contrib.auth.backends import BaseBackend
-from django.contrib.auth.models import User
-import db_utils
+from mainapp import db_utils
 
 class MovieDBBackend(BaseBackend):
     def authenticate(self, request, username=None, password=None):

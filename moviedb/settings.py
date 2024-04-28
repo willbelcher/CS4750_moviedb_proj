@@ -91,6 +91,8 @@ DATABASES = {
     
 }
 
+LOGIN_URL = "/login"
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -110,7 +112,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTHENTICATION_bACKENDS = [
+AUTH_USER_MODEL = "mainapp.User"
+
+AUTHENTICATION_BACKENDS = [
     'mainapp.backends.MovieDBBackend',
 ]
 
