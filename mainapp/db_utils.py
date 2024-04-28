@@ -6,6 +6,11 @@ from django.db import connection
 
 def get_user(email):
     return User.objects.raw("SELECT * FROM user WHERE email=%s", [email])[0]
+
+def get_reviews_by_user(email, limit=25):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM review WHERE email=%s LIMIT %s", [email, limit])
+        return cursor.fetchall()
     
 
     # with connection.cursor() as cursor:
