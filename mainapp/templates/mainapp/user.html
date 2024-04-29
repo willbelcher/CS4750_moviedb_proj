@@ -4,26 +4,32 @@
 <html>
 <head>
     <title>Reviews</title>
-    <header> {{reviews.0.1}}'s Reviews</header>
+    <header> {{reviews.0.1}}'s Reviews:</header>
     {% block content %}
-    <div class="container">
-        <div class="row align-items-start">
-            <div class="col">Movie Title</div>
-            <div class="col">Score</div>
-            <div class ="col">Review Title</div>
-            <div class ="col">Review</div>
-        </div>
-        {% for review in reviews %}
-        <div class="row align-items-start">
-            
-            <div class="col">{{ movies.1 }}</div>
-            <div class="col">{{ review.2 }}</div>
-            <div class ="col">{{ review.3 }}</div>
-            <div class ="col">{{ review.4 }}</div>
-            
-        </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+            <th scope="col">Movie Title</th>
+            <th scope="col">Score</th>
+            <th scope="col">Review Title</th>
+            <th scope="col">Review</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for movie in movies %}
+            {% for review in reviews %}
+                {% if movie.0.0 == review.0 %}
+                <tr>
+                    <th scope ="row">{{ movie.0.1 }}</th>
+                    <td>{{ review.2 }}</td>
+                    <td>{{ review.3 }}</td>
+                    <td>{{ review.4 }}</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
         {% endfor %}
-    </div>
+        </tbody>
+    </table>
     {% endblock %}
 </head>
 <body>
