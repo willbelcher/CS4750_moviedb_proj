@@ -22,8 +22,8 @@ ENV APP_HOME /app
 WORKDIR $APP_HOME
 
 # Install dependencies
-RUN apt-get -y update && apt-get -y install python3-dev default-libmysqlclient-dev build-essential
 COPY requirements.txt .
+RUN apt-get -y update && apt-get -y install python3-dev default-libmysqlclient-dev build-essential
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy local code to the container image.
