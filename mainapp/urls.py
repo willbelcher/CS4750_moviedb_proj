@@ -7,8 +7,6 @@ urlpatterns = [
     path('', views.home, name='myreviews'),
     path('moviesearch/', views.movie_search, name='moviesearch'),
     path('logout/', views.handle_logout, name='logout'),
-    path('login/', views.login_view, name='login'),
-    path('create-account/', views.create_account_view, name='create_account'), # create account form
-    path('add-account', views.create_account, name='add_account'), # adds to db
-    path('authenticate/', views.handle_login, name='authenticate'),
+    path('login/', views.user_login, name='login'),
+    path('create-account', views.create_account, name='create_account'), # adds to db
 ]
