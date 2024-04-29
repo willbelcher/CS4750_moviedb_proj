@@ -58,7 +58,7 @@ def search_movies(request):
 
         if len(min_score) == 0: min_score = None
 
-        movies = db_utils.get_movies(title, min_score)
+        movies = db_utils.get_movies_full(title, min_score, get_watched=request.user.email, get_watchlist=request.user.email)
         
 
     scores = list(range(0, 101))[::-1]
@@ -66,8 +66,13 @@ def search_movies(request):
 
     return render(request, 'mainapp/search_movies.html', context={'scores': scores, 'movies': movies})
 
-def add_watchlist(request):
-    pass
+def add_watchlist(request, movie_id, next):
+    db_utils.add_movie_to_watchlist(request.user.email, movie_id)
+    return redirect(next)
+
+def add_watched(request, movie_id, next):
+    db_utils.add_movie_to_watched(request.user.email, movie_id)
+    return redirect(next)
 
 def search_users(request):
     pass
