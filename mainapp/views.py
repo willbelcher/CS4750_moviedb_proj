@@ -5,14 +5,9 @@ from django.shortcuts import render, redirect
 from mainapp import db_utils
 
 @login_required
-def home(request): # myreviews page
+def home(request): # user home page (reviews, watched, watchlist)
 
     return render(request, 'mainapp/home.html')
-
-
-def movie_search(request):
-
-    return render(request)
 
 def user_login(request):
     if request.method == "POST":
@@ -23,7 +18,7 @@ def user_login(request):
 
         if user is not None:
             login(request, user)
-            return redirect('mainapp:myreviews')
+            return redirect('mainapp:home')
         
         return render(request, 'mainapp/login.html', {'errormsg': 'Incorrect email or password'})
 
@@ -45,7 +40,7 @@ def create_account(request):
         user = authenticate(request, username=email, password=password)
         login(request, user)
 
-        return redirect('mainapp:myreviews')
+        return redirect('mainapp:home')
     
     return render(request, 'mainapp/create_account.html')
 
@@ -53,7 +48,25 @@ def handle_logout(request):
     logout(request)
     return redirect('mainapp:login')
 
+@login_required
 def search_movies(request):
+    movies = []
+
+    if request.method == "POST":
+        title = request.POST.get("title")
+        min_score = request.POST.get("min_score")
+
+        if len(min_score) == 0: min_score = None
+
+        movies = db_utils.get_movies(title, min_score)
+        
+
+    scores = list(range(0, 101))[::-1]
+    scores = [x/10 for x in scores]
+
+    return render(request, 'mainapp/search_movies.html', context={'scores': scores, 'movies': movies})
+
+def add_watchlist(request):
     pass
 
 def search_users(request):
