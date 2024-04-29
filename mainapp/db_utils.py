@@ -1,9 +1,6 @@
 from mainapp.models import User
 from django.db import connection
 
-# add raw sql statements here
-# https://docs.djangoproject.com/en/5.0/topics/db/sql/#executing-custom-sql-directly
-
 # From django documenation, converts row data to dict
 def dictfetchall(cursor):
     columns = [col[0] for col in cursor.description]
@@ -108,8 +105,3 @@ def add_movie_to_watched(email, movie_id):
 
     return
     
-    
-
-    # with connection.cursor() as cursor:
-    #     cursor.execute("SELECT * FROM user WHERE email=%s", [email])
-    #     return cursor.fetchone()
