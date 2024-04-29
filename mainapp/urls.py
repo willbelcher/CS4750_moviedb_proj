@@ -14,4 +14,5 @@ urlpatterns = [
     path('create-account/', views.create_account, name='create_account'),
     path('user/<str:usr>/', views.list_user_reviews, name='view_user'),
     path('movie/<int:movie_id>/', views.list_movie_reviews, name='view_movie'),
+    path('new-review/<int:movie_id>/', views.new_review, name='new_review'),
 ]
