@@ -16,7 +16,7 @@
 
 # Use an official lightweight Python image.
 # https://hub.docker.com/_/python
-FROM ubuntu:latest
+FROM python:3.11-slim
 
 ENV APP_HOME /app
 WORKDIR $APP_HOME
