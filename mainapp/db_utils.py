@@ -124,3 +124,8 @@ def get_watched(email, limit=25):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM watched JOIN movie WHERE email =%s LIMIT %s", [email, limit])
         return cursor.fetchall()
+    
+def add_review(movie_id, email, score, title, written_review):
+    with connection.cursor() as cursor:
+        cursor.execute("INSERT INTO reviews (movie_id, email, score, title, written_review) VALUES (%s, %s, %s, %s, %s)", [movie_id, email, score, title, written_review])
+    return
