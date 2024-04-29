@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from mainapp import db_utils
@@ -64,7 +65,15 @@ def search_users(request):
 def list_movie_reviews(request):
     pass
 
-def list_user_reviews(request):
+def list_user_reviews(request, usr):
+    if db_utils.get_user(usr) is None:
+        redirect('mainapp:myreviews')
+
+    reviews = db_utils.get_reviews_by_user(usr)
+
+    return render(request, 'mainapp/user.html', {"reviews":reviews})
+
+def list_user_watchlist(request):
     pass
 
 def add_review(request):
