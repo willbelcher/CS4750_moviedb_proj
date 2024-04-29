@@ -52,6 +52,29 @@ def get_movie(id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM movie WHERE movie_id=%s", [id])
         movie =  cursor.fetchone()
+
+        if movie is not None:
+            return movie
+
+    return None
+
+def get_movies(title=False, min_score=False, limit=30):
+    with connection.cursor() as cursor:
+        args = []
+        query = "SELECT * FROM movie"
+        if title or min_score:
+            query += " WHERE"
+        if title:
+            query += " title LIKE %s"
+            args.append('%' + title + '%')
+        if min_score and title:
+            query += " AND"
+        if min_score:
+            query += " average_review_score>=%s"
+            args.append(min_score)
+        args.append(limit)
+        cursor.execute(query + " LIMIT %s", args)
+        return dictfetchall(cursor)
     
 # gets movie and all related information
 def get_movies_full(title=False, min_score=False, get_watched=False, get_watchlist=False, limit=30):
