@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from mainapp import db_utils
 
 @login_required
 def home(request): # myreviews page
@@ -29,10 +30,26 @@ def login_view(request):
 
     return render(request, 'mainapp/login.html')
 
-def create_user(request):
+# renders form
+def create_account_view(request):
 
-    return 
+    return render(request, 'mainapp/create_account.html')
 
+# handles account insertion into db
+def create_account(request):
+    email = request.POST["email"]
+    name = request.POST['name']
+    password = request.POST["password"]
+
+    success = db_utils.add_user(email, name, password)
+
+    if not success:
+        return redirect('mainapp:create_account')
+    
+    user = authenticate(request, username=email, password=password)
+    login(request, user)
+
+    return redirect('mainapp:myreviews')
 
 def handle_logout(request):
     logout(request)

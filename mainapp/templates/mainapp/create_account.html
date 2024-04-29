@@ -15,12 +15,18 @@
                 <header>MovieDB</header>
             </div>
             
-            <form class="login" method="POST" action="{% url 'mainapp:authenticate' %}">
+            <form class="login" method="POST" action="{% url 'mainapp:add_user' %}">
                 {% csrf_token %}
 
                 <!-- Email Field -->
                 <div class="input-field">
                     <input type="text" class="input" name="email" required placeholder="Email" id="id_login">
+                    <i class='bx bx-user' ></i>
+                </div>
+
+                <!-- Name Field -->
+                <div class="input-field">
+                    <input type="text" class="input" name="name" required placeholder="Name" id="id_name">
                     <i class='bx bx-user' ></i>
                 </div>
         
@@ -33,7 +39,7 @@
                 <input type="submit" class="regular-login" value="Login" id="">
             </form> 
 
-            <a href="{%url 'mainapp:create_account' %}">Or Create an Account</a>
+            <a href="{%url 'mainapp:login' %}">Or Login</a>
         </div>
     </div> 
 </body>

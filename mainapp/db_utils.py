@@ -14,6 +14,16 @@ def get_user(email):
     
     return None
 
+def add_user(email, name, password):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT COUNT(*) FROM user WHERE email=%s", [email])
+        if cursor.fetchone() is not None:
+            return False
+        
+        cursor.execute("INSERT INTO user (email, name, number_of_review, password) VALUES (%s, %s, %s, %s)", [email, name, 0, password])
+
+    return True
+
 
 def get_reviews_by_user(email, limit=25):
     with connection.cursor() as cursor:
