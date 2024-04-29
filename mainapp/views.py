@@ -14,45 +14,40 @@ def movie_search(request):
 
     return render(request)
 
+def user_login(request):
+    if request.method == "POST":
+        email = request.POST["email"]
+        password = request.POST["password"]
 
-def handle_login(request):
-    email = request.POST["email"]
-    password = request.POST["password"]
+        user = authenticate(request, username=email, password=password)
 
-    user = authenticate(request, username=email, password=password)
-
-    if user is not None:
-        login(request, user)
-        return redirect('mainapp:myreviews')
-     
-    return redirect('mainapp:login')
-
-def login_view(request):
+        if user is not None:
+            login(request, user)
+            return redirect('mainapp:myreviews')
+        
+        return render(request, 'mainapp/login.html', {'errormsg': 'Incorrect email or password'})
 
     return render(request, 'mainapp/login.html')
 
-# renders form
-def create_account_view(request):
-
-    return render(request, 'mainapp/create_account.html')
-
-# handles account insertion into db
 def create_account(request):
-    email = request.POST["email"]
-    name = request.POST['name']
-    password = request.POST["password"]
+    if request.method == "POST":
+        email = request.POST["email"]
+        name = request.POST['name']
+        password = request.POST["password"]
 
-    hashed_password = make_password(password)
+        hashed_password = make_password(password)
 
-    success = db_utils.add_user(email, name, hashed_password)
+        success = db_utils.add_user(email, name, hashed_password)
 
-    if not success:
-        return redirect('mainapp:create_account')
+        if not success:
+            return render(request, 'mainapp/create_account.html', {'errormsg': 'email already exists'})
+        
+        user = authenticate(request, username=email, password=password)
+        login(request, user)
+
+        return redirect('mainapp:myreviews')
     
-    user = authenticate(request, username=email, password=password)
-    login(request, user)
-
-    return redirect('mainapp:myreviews')
+    return render(request, 'mainapp/create_account.html')
 
 def handle_logout(request):
     logout(request)

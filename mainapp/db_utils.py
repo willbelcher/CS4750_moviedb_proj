@@ -10,7 +10,7 @@ def get_user(email):
         user = cursor.fetchone()
 
     if user is not None:
-        return User(email=user[0], name=user[1])
+        return User(email=user[0], name=user[1], password=user[3])
     
     return None
 
@@ -18,11 +18,11 @@ def get_user(email):
 # returns true user does not already exist
 def add_user(email, name, password):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT COUNT(*) FROM user WHERE email=%s", [email])
-        if cursor.fetchone() is not None:
+        cursor.execute("SELECT COUNT(*) FROM user WHERE email = %s", [email])
+        if cursor.fetchone()[0] != 0:
             return False
         
-        cursor.execute("INSERT INTO user (email, name, number_of_review, password) VALUES (%s, %s, %s, %s)", [email, name, 0, password])
+        cursor.execute("INSERT INTO user (email, name, number_reviews, password) VALUES (%s, %s, %s, %s)", [email, name, 0, password])
 
     return True
 

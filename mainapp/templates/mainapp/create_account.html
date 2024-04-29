@@ -15,7 +15,7 @@
                 <header>MovieDB</header>
             </div>
             
-            <form class="login" method="POST" action="{% url 'mainapp:add_account' %}">
+            <form class="login" method="POST" action="{% url 'mainapp:create_account' %}">
                 {% csrf_token %}
 
                 <!-- Email Field -->
@@ -38,6 +38,11 @@
 
                 <input type="submit" class="regular-login" value="Login" id="">
             </form> 
+            <div style="color: red;">
+                {% if errormsg %}
+                    {{ errormsg }}
+                {% endif %}
+            </div>
 
             <a href="{%url 'mainapp:login' %}">Or Login</a>
         </div>
