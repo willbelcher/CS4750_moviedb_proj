@@ -14,7 +14,7 @@
             <title>Reviews</title>
             <header>My Reviews:</header>
             {% block content %}
-            <table class="table table-striped">
+            <table class="table table-striped position-static">
                 <thead>
                 <tr>
                     <th scope="col">Movie Title</th>
@@ -33,9 +33,9 @@
                                 {{ movie.1 }}
                                 </a>
                             </th>
-                            <td>{{ review.2 }}</td>
-                            <td>{{ review.3 }}</td>
-                            <td class ="d-block text-truncate" alt="Max-width 10%">{{ review.4 }}</td>
+                            <td style="max-width: 250px;">{{ review.2 }}</td>
+                            <td style="max-width: 250px;">{{ review.3 }}</td>
+                            <td class ="d-block text-truncate" style="max-width: 250px;">{{ review.4 }}</td>
                         </tr>
                         {% endif %}
                     {% endfor %}
