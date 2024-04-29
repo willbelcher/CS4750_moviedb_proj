@@ -91,6 +91,19 @@
                                         </a>
                                     </div>
                                     {% endif %}
+                                    {% if movie.reviewed %}
+                                    <div class="col-auto">
+                                        <a class="btn btn-primary" type="button" href="{% url 'mainapp:edit_review' movie.movie_id %}">
+                                            Edit Review
+                                        </a>
+                                    </div>
+                                    {% else %}
+                                    <div class="col-auto">
+                                        <a class="btn btn-primary" type="button" href="{% url 'mainapp:new_review' movie.movie_id %}">
+                                            Leave Review
+                                        </a>
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
     
