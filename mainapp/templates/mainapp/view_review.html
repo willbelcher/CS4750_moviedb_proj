@@ -5,6 +5,29 @@
     <div class="d-flex justify-content-center">
         <header><b> Review for "{{ movie.1 }}" by {{review.1}} </b></header>
     </div>
+        {% if allow_edit %}
+        <div class="card mb-3 justify-content-center">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col-sm-auto">
+                        <a href="{% url 'mainapp:edit_review' movie.0 %}">
+                            Edit Review
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col-sm-auto">
+                        <a href="{% url 'mainapp:delete_review' movie.0 %}">
+                            Delete Review
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    
     <div class="jumbotron jumbotron-fluid">
         <div class="container justify-content-center">
           <h1 class="display-4">{{ review.3 }}</h1>

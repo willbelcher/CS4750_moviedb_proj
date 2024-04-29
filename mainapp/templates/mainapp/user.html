@@ -20,10 +20,14 @@
             {% for review in reviews %}
                 {% if movie.0 == review.0 %}
                 <tr>
-                    <th scope ="row">{{ movie.1 }}</th>
+                    <th scope ="row">
+                        <a href="{% url 'mainapp:view_review' movie.0 review.1 %}">
+                            {{ movie.1 }}
+                        </a>
+                    </th>
                     <td>{{ review.2 }}</td>
                     <td>{{ review.3 }}</td>
-                    <td>{{ review.4 }}</td>
+                    <td class ="d-block text-truncate" alt="Max-width 100%">{{ review.4 }}</td>
                 </tr>
                 {% endif %}
             {% endfor %}

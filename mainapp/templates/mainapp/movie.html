@@ -18,7 +18,11 @@
         <tbody>
         {% for review in reviews %}
             <tr>
-                <th scope ="row">{{ review.1 }}</th>
+                <th scope ="row">
+                    <a href="{% url 'mainapp:view_user' review.1 %}">
+                    {{ review.1 }}
+                    </a>
+                </th>
                 <td>{{ review.2 }}</td>
                 <td>{{ review.3 }}</td>
                 <td>{{ review.4 }}</td>

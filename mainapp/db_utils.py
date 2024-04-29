@@ -85,7 +85,7 @@ def get_movies(title=False, min_score=False, limit=30):
         return dictfetchall(cursor)
     
 # gets movie and all related information
-def get_movies_full(title=False, min_score=False, get_watched=False, get_watchlist=False, limit=30):
+def get_movies_full(title=False, min_score=False, get_watched=False, get_watchlist=False, get_reviewed=False, limit=30):
     movies = get_movies(title, min_score)
     with connection.cursor() as cursor:
         for i, movie in enumerate(movies):
@@ -104,6 +104,9 @@ def get_movies_full(title=False, min_score=False, get_watched=False, get_watchli
             if get_watched:
                 cursor.execute("SELECT * FROM watched WHERE movie_id=%s AND email=%s", [movie['movie_id'], get_watched])
                 movies[i]['watched'] = bool(len(dictfetchone(cursor)))
+            if get_reviewed:
+                cursor.execute("SELECT * FROM reviews WHERE movie_id=%s AND email=%s", [movie["movie_id"], get_reviewed])
+                movies[i]['reviewed'] = bool(len(dictfetchone(cursor)))
 
     return movies
 
@@ -143,3 +146,15 @@ def get_review(movie_id, email):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM reviews WHERE movie_id =%s AND email =%s", [movie_id, email])
         return cursor.fetchone()
+    
+def update_review(movie_id, email, score, title, written_review):
+    with connection.cursor() as cursor:
+        review = cursor.execute("UPDATE reviews SET score =%s, title =%s, written_review =%s WHERE movie_id =%s AND email =%s", [score, title, written_review, movie_id, email])
+    if review is not None:
+        return review
+    return None
+
+def delete_review(movie_id, email):
+    with connection.cursor() as cursor:
+        cursor.execute("DELETE FROM reviews WHERE movie_id =%s AND email =%s", [movie_id, email])
+    return
