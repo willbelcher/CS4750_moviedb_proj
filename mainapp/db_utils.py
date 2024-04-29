@@ -118,12 +118,12 @@ def get_reviews_by_movie(id, limit=25):
     
 def get_watchlist(email, limit=25):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM watchlist JOIN movie WHERE email =%s LIMIT %s", [email, limit])
+        cursor.execute("SELECT * FROM watchlist NATURAL JOIN movie WHERE email =%s LIMIT %s", [email, limit])
         return cursor.fetchall()
     
 def get_watched(email, limit=25):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM watched JOIN movie WHERE email =%s LIMIT %s", [email, limit])
+        cursor.execute("SELECT * FROM watched NATURAL JOIN movie WHERE email =%s LIMIT %s", [email, limit])
         return cursor.fetchall()
     
 def add_review(movie_id, email, score, title, written_review):
