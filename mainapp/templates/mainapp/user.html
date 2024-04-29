@@ -18,9 +18,9 @@
         <tbody>
         {% for movie in movies %}
             {% for review in reviews %}
-                {% if movie.0.0 == review.0 %}
+                {% if movie.0 == review.0 %}
                 <tr>
-                    <th scope ="row">{{ movie.0.1 }}</th>
+                    <th scope ="row">{{ movie.1 }}</th>
                     <td>{{ review.2 }}</td>
                     <td>{{ review.3 }}</td>
                     <td>{{ review.4 }}</td>

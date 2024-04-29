@@ -13,5 +13,6 @@ urlpatterns = [
     path('add-account', views.create_account, name='add_account'), # adds to db
     path('authenticate/', views.user_login, name='authenticate'),
     path('user/<str:usr>/', views.list_user_reviews, name='view_user'),
+    path('movie/<int:movie_id>/', views.list_movie_reviews, name='view_movie'),
     path('add-watchlist/', views.add_watchlist, name='add_watchlist'),
 ]

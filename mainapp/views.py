@@ -72,17 +72,17 @@ def add_watchlist(request):
 def search_users(request):
     pass
 
-def list_movie_reviews(request):
+def list_movie_reviews(request, movie_id):
     pass
 
 def list_user_reviews(request, usr):
     if db_utils.get_user(usr) is None:
-        redirect('mainapp:myreviews')
+        return redirect('mainapp:home')
 
     reviews = db_utils.get_reviews_by_user(usr)
     movies = []
     for review in reviews:
-        movies.append(db_utils.get_movies_by_id(review[0]))
+        movies.append(db_utils.get_movie(review[0]))
 
     return render(request, 'mainapp/user.html', {"reviews":reviews, "movies":movies})
 
