@@ -1,0 +1,65 @@
+{% include "nav.html" %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <title>User Search</title>
+</head>
+<body>
+    <div>
+        <br>
+    
+        {% block content %}
+    
+            <form class="container" action="{% url 'mainapp:user_search' %}" method="post">
+                {% csrf_token %}
+                <!-- Name Filter -->
+                <div class="col-md-4 mb-3">
+                    <label for="name">Name:</label>
+                    <input class="form-control" type="text" name="name" id="name">
+                </div>
+
+                <!-- Search Button -->
+                <div class="col-md-6 mb-3">
+                    <button type="submit" class="btn btn-primary" name="search_button">Search</button>
+                </div>
+            </form>
+            <hr>
+    
+            <br>
+            <br>
+
+            {% if users %}
+                <div class="container">
+    
+                    {% for user in users %}
+                        <div class="card mb-3">
+                            <div class="card-header">
+    
+                                <div class="row align-items-center">
+                                    <div class="col-sm-auto">
+                                        <a href="{% url 'mainapp:view_user' user.email %}">
+                                            {{ user.name }}
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-auto">
+                                        num_reviews: {{ user.number_reviews }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <section class="section-2 text-center">
+                    <p>No results found</p>
+                </section>
+            {% endif %}
+        {% endblock %}
+    </div>
+    </body>
+    </html>
+    
