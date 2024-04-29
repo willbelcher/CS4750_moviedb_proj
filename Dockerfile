@@ -28,4 +28,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 CMD chmod 755 manage.py
-CMD exec ./manage.py runserver 0.0.0.0:$PORT
+CMD ./manage.py runserver 0.0.0.0:$PORT
