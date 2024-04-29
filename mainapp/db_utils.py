@@ -32,13 +32,14 @@ def get_user(email):
     return user
 
 # returns true user does not already exist
-def add_user(email, name, password):
+def add_user(email, name, phone, password):
     with connection.cursor() as cursor:
         cursor.execute("SELECT COUNT(*) FROM user WHERE email = %s", [email])
         if cursor.fetchone()[0] != 0:
             return False
         
         cursor.execute("INSERT INTO user (email, name, number_reviews, password) VALUES (%s, %s, %s, %s)", [email, name, 0, password])
+        cursor.execute("INSERT INTO user_phone (email, phone) VALUES (%s, %s)", [email, phone])
 
     return True
 

@@ -36,13 +36,14 @@ def user_login(request):
 
 def create_account(request):
     if request.method == "POST":
-        email = request.POST["email"]
-        name = request.POST['name']
-        password = request.POST["password"]
+        email = request.POST.get("email")
+        name = request.POST.get('name')
+        number = request.POST.get("phone number")
+        password = request.POST.get("password")
 
         hashed_password = make_password(password)
 
-        success = db_utils.add_user(email, name, hashed_password)
+        success = db_utils.add_user(email, name, number, hashed_password)
 
         if not success:
             return render(request, 'mainapp/create_account.html', {'errormsg': 'email already exists'})
