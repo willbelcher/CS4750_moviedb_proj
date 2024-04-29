@@ -10,8 +10,12 @@ def dictfetchall(cursor):
     return [dict(zip(columns, row)) for row in cursor.fetchall()]
 
 def dictfetchone(cursor):
+    res = cursor.fetchone()
+    if not res:
+        res = []
+
     columns = [col[0] for col in cursor.description]
-    return dict(zip(columns, cursor.fetchone()))
+    return dict(zip(columns, res))
 
 def get_user_model(email):
     with connection.cursor() as cursor:
@@ -70,7 +74,7 @@ def get_movies(title=False, min_score=False, limit=30):
         return dictfetchall(cursor)
     
 # gets movie and all related information
-def get_movies_full(title=False, min_score=False, limit=30):
+def get_movies_full(title=False, min_score=False, get_watched=False, get_watchlist=False, limit=30):
     movies = get_movies(title, min_score)
     with connection.cursor() as cursor:
         for i, movie in enumerate(movies):
@@ -83,7 +87,27 @@ def get_movies_full(title=False, min_score=False, limit=30):
             cursor.execute("SELECT award_name, year, did_win FROM movie_nominations WHERE movie_id=%s LIMIT %s", [movie['movie_id'], limit])
             movies[i]['awards'] = dictfetchall(cursor)
 
+            if get_watchlist:
+                cursor.execute("SELECT * FROM watchlist WHERE movie_id=%s AND email=%s", [movie['movie_id'], get_watchlist])
+                movies[i]['watchlist'] = bool(len(dictfetchone(cursor)))
+            if get_watched:
+                cursor.execute("SELECT * FROM watched WHERE movie_id=%s AND email=%s", [movie['movie_id'], get_watched])
+                movies[i]['watched'] = bool(len(dictfetchone(cursor)))
+
     return movies
+
+def add_movie_to_watchlist(email, movie_id):
+    with connection.cursor() as cursor:
+        cursor.execute("INSERT INTO watchlist (email, movie_id) VALUES (%s, %s)", [email, movie_id])
+
+    return
+
+def add_movie_to_watched(email, movie_id):
+    with connection.cursor() as cursor:
+        cursor.execute("INSERT INTO watched (email, movie_id) VALUES (%s, %s)", [email, movie_id])
+
+    return
+    
     
 
     # with connection.cursor() as cursor:

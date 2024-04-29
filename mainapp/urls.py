@@ -10,5 +10,6 @@ urlpatterns = [
     path('logout/', views.handle_logout, name='logout'),
     path('login/', views.user_login, name='login'),
     path('create-account/', views.create_account, name='create_account'),
-    path('add-watchlist/', views.add_watchlist, name='add_watchlist'),
+    path('add-watchlist/<int:movie_id>/<path:next>', views.add_watchlist, name='add_watchlist'),
+    path('add-watched/<int:movie_id>/<path:next>', views.add_watched, name='add_watched'),
 ]

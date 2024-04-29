@@ -67,6 +67,25 @@
                                             More Info
                                         </button>
                                     </div>
+                                    {% if movie.watched %}
+                                    {% elif movie.watchlist %}
+                                    <div class="col-auto">
+                                        <a class="btn btn-primary" type="button" href="{% url 'mainapp:add_watched' movie.movie_id request.path|urlencode %}">
+                                            Add to Watched
+                                        </a>
+                                    </div>
+                                    {% else %}
+                                    <div class="col-auto">
+                                        <a class="btn btn-primary" type="button" href="{% url 'mainapp:add_watched' movie.movie_id request.path|urlencode %}">
+                                            Add to Watched
+                                        </a>
+                                    </div>
+                                    <div class="col-auto">
+                                        <a class="btn btn-primary" type="button" href="{% url 'mainapp:add_watchlist' movie.movie_id request.path|urlencode %}">
+                                            Add to Watchlist
+                                        </a>
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
     
@@ -133,13 +152,7 @@
                                     </div>
                                 </div>
                             </div>
-    
-                            <div class="card-footer">
-                                <form method="post" action="{% url 'mainapp:add_watchlist' %}">
-                                    {% csrf_token %}
-                                    
-                                </form>
-                            </div>
+
                         </div>
                     {% endfor %}
                 </div>
