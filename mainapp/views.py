@@ -131,7 +131,9 @@ def new_review(request, movie_id):
     movie = db_utils.get_movie(movie_id)
 
     if request.method == "POST":
-        db_utils.add_review(movie_id, request.user, request.POST.get("score", None), request.POST.get("title", None), request.POST.get("written_review", None))
+        db_utils.add_review(movie_id, request.user, request.POST.get("score"), 
+                            request.POST.get("reviewTitle"), request.POST.get("written-review"))
+        return redirect('mainapp:home')
 
     return render(request, 'mainapp/new_review.html', {"movie": movie})
 

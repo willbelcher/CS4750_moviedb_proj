@@ -122,6 +122,7 @@ def add_movie_to_watched(email, movie_id):
 def get_reviews_by_movie(id, limit=25):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM reviews WHERE movie_id =%s LIMIT %s", [id, limit])
+        return cursor.fetchall()
     
 def get_watchlist(email, limit=25):
     with connection.cursor() as cursor:
