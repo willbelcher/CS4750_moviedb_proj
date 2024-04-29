@@ -77,10 +77,27 @@ def add_watched(request, movie_id, next):
 def search_users(request):
     pass
 
-def list_movie_reviews(request):
-    pass
+def list_movie_reviews(request, movie_id):
+    if db_utils.get_movie(movie_id) is None:
+        return redirect('mainapp:home')
+    
+    movie = db_utils.get_movie(movie_id)
+    reviews = db_utils.get_reviews_by_movie(movie_id)
 
-def list_user_reviews(request):
+    return render(request, 'mainapp/movie.html', {"reviews":reviews, "movie":movie})
+
+def list_user_reviews(request, usr):
+    if db_utils.get_user(usr) is None:
+        return redirect('mainapp:home')
+
+    reviews = db_utils.get_reviews_by_user(usr)
+    movies = []
+    for review in reviews:
+        movies.append(db_utils.get_movie(review[0]))
+
+    return render(request, 'mainapp/user.html', {"reviews":reviews, "movies":movies})
+
+def list_user_watchlist(request):
     pass
 
 def add_review(request):

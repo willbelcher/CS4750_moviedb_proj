@@ -20,17 +20,16 @@ def get_user_model(email):
         user = cursor.fetchone()
 
     if user is not None:
-        return User(email=user[0], name=user[1], password=user[3], number_reviews=user[2])
+        return User(email=user[0], name=user[1], password=user[3])
     
     return None
-
+ 
 def get_user(email):
     with connection.cursor() as cursor:
         cursor.execute("SELECT email, name, number_reviews FROM user WHERE email=%s", [email])
         user = dictfetchone(cursor)  
 
     return user
-
 
 # returns true user does not already exist
 def add_user(email, name, password):
@@ -49,26 +48,10 @@ def get_reviews_by_user(email, limit=25):
         cursor.execute("SELECT * FROM reviews WHERE email=%s LIMIT %s", [email, limit])
         return cursor.fetchall()
     
-def get_movies(title=False, min_score=False, limit=30):
+def get_movie(id):
     with connection.cursor() as cursor:
-        args = []
-        query = "SELECT * FROM movie"
-
-        if title or min_score:
-            query += " WHERE"
-        if title:
-            query += " title LIKE %s"
-            args.append('%' + title + '%')
-        if min_score and title:
-            query += " AND"
-        if min_score:
-            query += " average_review_score>=%s"
-            args.append(min_score)
-
-        args.append(limit)
-
-        cursor.execute(query + " LIMIT %s", args)
-        return dictfetchall(cursor)
+        cursor.execute("SELECT * FROM movie WHERE movie_id=%s", [id])
+        movie =  cursor.fetchone()
     
 # gets movie and all related information
 def get_movies_full(title=False, min_score=False, get_watched=False, get_watchlist=False, limit=30):
@@ -104,4 +87,8 @@ def add_movie_to_watched(email, movie_id):
         cursor.execute("INSERT INTO watched (email, movie_id) VALUES (%s, %s)", [email, movie_id])
 
     return
-    
+
+def get_reviews_by_movie(id, limit=25):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM reviews WHERE movie_id =%s LIMIT %s", [id, limit])
+        return cursor.fetchall()
