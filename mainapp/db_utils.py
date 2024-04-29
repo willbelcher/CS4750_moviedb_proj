@@ -42,6 +42,13 @@ def add_user(email, name, password):
 
     return True
 
+def get_users(name):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT email, name, number_reviews FROM user WHERE name LIKE %s", ['%'+name+'%'])
+        users = dictfetchall(cursor)  
+
+    return users
+
 
 def get_reviews_by_user(email, limit=25):
     with connection.cursor() as cursor:
