@@ -67,6 +67,11 @@
                                             More Info
                                         </button>
                                     </div>
+                                    <div class="col-auto">
+                                        <a class="btn btn-primary" type="button" href="{% url 'mainapp:view_movie' movie.movie_id %}">
+                                            See Reviews
+                                        </a>
+                                    </div>
                                     {% if movie.watched %}
                                     {% elif movie.watchlist %}
                                     <div class="col-auto">
