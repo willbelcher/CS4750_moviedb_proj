@@ -1,0 +1,144 @@
+{% include "nav.html" %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <title>Movie Search</title>
+</head>
+<body>
+    <div>
+        <br>
+    
+        {% block content %}
+    
+            <form class="container" action="{% url 'mainapp:movie_search' %}" method="post">
+                {% csrf_token %}
+                <!-- Title Filter -->
+                <div class="col-md-4 mb-3">
+                    <label for="title">Title:</label>
+                    <input class="form-control" type="text" name="title" id="title">
+                </div>
+
+                <!-- Year Filter -->
+                <div class="col-md-3 mb-3">
+                    <label for="min_score">Minimum Score:</label>
+                    <select class="form-control" name="min_score" id="min_score">
+                        {% for score in scores %}
+                        <option value="{{ score }}">{{ score }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+    
+                <!-- Search Button -->
+                <div class="col-md-6 mb-3">
+                    <button type="submit" class="btn btn-primary" name="official_search_button">Search</button>
+                </div>
+            </form>
+            <hr>
+    
+            <br>
+            <br>
+
+            {% if movies %}
+                <div class="container">
+    
+                    {% for movie in movies %}
+                        <div class="card mb-3">
+                            <div class="card-header">
+    
+                                <div class="row align-items-center">
+                                    <div class="col-sm-auto">
+                                        {{ movie.title }}
+                                    </div>
+                                    <div class="col-sm-auto">
+                                        {{ movie.length|date:'H:i' }}
+                                    </div>
+                                    <div class="col-sm-auto">
+                                        {{ movie.average_review_score }}
+                                    </div>
+    
+                                    <!-- Modal for More Info -->
+                                    <div class="col-auto">
+                                        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#extra_info_{{ forloop.counter }}">
+                                            More Info
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="modal fade" id="extra_info_{{ forloop.counter }}" tabindex="-1" role="dialog" aria-labelledby="extraInfoModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="extraInfoModalLabel">{{ movie.title }}</h5>
+                                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="col">
+                                                <div class="sticky-top" style="position: -webkit-sticky">
+                                                    <div class="card container">
+                                                        <div class="card-header row">
+                                                            <div class="col-sm-auto">
+                                                                
+                                                            </div>
+                                                            <div class="col">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body row">
+                                                            <div class="col-sm-auto">
+    
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+    
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-auto">
+                                    </div>
+                                    
+                                </div>
+                            </div>
+    
+                            <div class="card-body collapse" id="extra_info_{{ forloop.counter }}">
+                                <div class="row">
+                                    <div class="col-sm-auto">
+                                        <p>Location:</p>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="card-footer">
+                                <form method="post" action="{% url 'mainapp:add_watchlist' %}">
+                                    {% csrf_token %}
+                                    
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <section class="section-2 text-center">
+                    <p>No results found</p>
+                </section>
+            {% endif %}
+        {% endblock %}
+    </div>
+    </body>
+    </html>
+    
