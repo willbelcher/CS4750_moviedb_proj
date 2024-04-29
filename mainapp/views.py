@@ -137,6 +137,15 @@ def new_review(request, movie_id):
 
     return render(request, 'mainapp/new_review.html', {"movie": movie})
 
+def view_review(request, movie_id, usr):
+    review = db_utils.get_review(movie_id, usr)
+
+    movie = db_utils.get_movie(movie_id)
+
+    return render(request, 'mainapp/view_review.html', {"review":review, "movie":movie})
+    
+
+
 @login_required
 def delete_review(request):
     pass
