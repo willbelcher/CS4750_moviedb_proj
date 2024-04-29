@@ -16,7 +16,7 @@
 
 # Use an official lightweight Python image.
 # https://hub.docker.com/_/python
-FROM python:3.11-slim
+FROM alpine:latest
 
 ENV APP_HOME /app
 WORKDIR $APP_HOME
