@@ -48,13 +48,16 @@ def get_reviews_by_user(email, limit=25):
         cursor.execute("SELECT * FROM reviews WHERE email=%s LIMIT %s", [email, limit])
         return cursor.fetchall()
     
-def get_movies(title=False, min_score=False, limit=25):
+def get_movies(title=False, min_score=False, limit=30):
     with connection.cursor() as cursor:
         args = []
-        query = "SELECT * FROM movie WHERE"
+        query = "SELECT * FROM movie"
+
+        if title or min_score:
+            query += " WHERE"
         if title:
             query += " title LIKE %s"
-            args.append(title+'%')
+            args.append('%' + title + '%')
         if min_score and title:
             query += " AND"
         if min_score:
@@ -67,10 +70,20 @@ def get_movies(title=False, min_score=False, limit=25):
         return dictfetchall(cursor)
     
 # gets movie and all related information
-def get_movies_full(title=False, min_score=False, limit=25):
+def get_movies_full(title=False, min_score=False, limit=30):
     movies = get_movies(title, min_score)
     with connection.cursor() as cursor:
-        pass
+        for i, movie in enumerate(movies):
+            cursor.execute("SELECT genre_name FROM movie_genre WHERE movie_id=%s LIMIT %s", [movie['movie_id'], limit])
+            movies[i]['genres'] = dictfetchall(cursor)
+            cursor.execute("SELECT role, name FROM movie_cast WHERE movie_id=%s LIMIT %s", [movie['movie_id'], limit])
+            movies[i]['cast'] = dictfetchall(cursor)
+            cursor.execute("SELECT title, composer FROM movie_musicscores WHERE movie_id=%s LIMIT %s", [movie['movie_id'], limit])
+            movies[i]['musicscores'] = dictfetchall(cursor)
+            cursor.execute("SELECT award_name, year, did_win FROM movie_nominations WHERE movie_id=%s LIMIT %s", [movie['movie_id'], limit])
+            movies[i]['awards'] = dictfetchall(cursor)
+
+    return movies
     
 
     # with connection.cursor() as cursor:

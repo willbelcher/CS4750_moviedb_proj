@@ -26,6 +26,7 @@
                 <div class="col-md-3 mb-3">
                     <label for="min_score">Minimum Score:</label>
                     <select class="form-control" name="min_score" id="min_score">
+                        <option value="" selected></option>
                         {% for score in scores %}
                         <option value="{{ score }}">{{ score }}</option>
                         {% endfor %}
@@ -34,7 +35,7 @@
     
                 <!-- Search Button -->
                 <div class="col-md-6 mb-3">
-                    <button type="submit" class="btn btn-primary" name="official_search_button">Search</button>
+                    <button type="submit" class="btn btn-primary" name="search_button">Search</button>
                 </div>
             </form>
             <hr>

@@ -56,8 +56,9 @@ def search_movies(request):
         title = request.POST.get("title")
         min_score = request.POST.get("min_score")
 
-        if title or min_score:
-            movies = db_utils.get_movies(title, min_score)
+        if len(min_score) == 0: min_score = None
+
+        movies = db_utils.get_movies(title, min_score)
         
 
     scores = list(range(0, 101))[::-1]
