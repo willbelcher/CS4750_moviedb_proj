@@ -6,8 +6,18 @@ from mainapp import db_utils
 
 @login_required
 def home(request): # user home page (reviews, watched, watchlist)
+    user = request.user
 
-    return render(request, 'mainapp/home.html')
+    reviews = db_utils.get_reviews_by_user(user)
+    movies = []
+    for review in reviews:
+        movies.append(db_utils.get_movie(review[0]))
+
+    watchlist = db_utils.get_watchlist(user)
+
+    watched = db_utils.get_watched(user)
+
+    return render(request, 'mainapp/home.html', {"email": user, "reviews":reviews, "movies":movies, "watchlist": watchlist, "watched": watched})
 
 def user_login(request):
     if request.method == "POST":
