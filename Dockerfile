@@ -22,6 +22,7 @@ ENV APP_HOME /app
 WORKDIR $APP_HOME
 
 # Install dependencies
+RUN sudo apt-get install python3-dev default-libmysqlclient-dev build-essential
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
