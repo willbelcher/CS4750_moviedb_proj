@@ -67,6 +67,25 @@
                                             More Info
                                         </button>
                                     </div>
+                                    {% if movie.watched %}
+                                    {% elif movie.watchlist %}
+                                    <div class="col-auto">
+                                        <a class="btn btn-primary" type="button" href="{% url 'mainapp:add_watched' movie.movie_id request.path|urlencode %}">
+                                            Add to Watched
+                                        </a>
+                                    </div>
+                                    {% else %}
+                                    <div class="col-auto">
+                                        <a class="btn btn-primary" type="button" href="{% url 'mainapp:add_watched' movie.movie_id request.path|urlencode %}">
+                                            Add to Watched
+                                        </a>
+                                    </div>
+                                    <div class="col-auto">
+                                        <a class="btn btn-primary" type="button" href="{% url 'mainapp:add_watchlist' movie.movie_id request.path|urlencode %}">
+                                            Add to Watchlist
+                                        </a>
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
     
@@ -83,18 +102,28 @@
                                             <div class="col">
                                                 <div class="sticky-top" style="position: -webkit-sticky">
                                                     <div class="card container">
-                                                        <div class="card-header row">
-                                                            <div class="col-sm-auto">
-                                                                
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                Genres: {{ movie.genres }}
                                                             </div>
-                                                            <div class="col">
-                                                                
+
+                                                            {% for cast in movie.cast %}
+                                                            <div class="row">
+                                                                {{ cast.role }}: {{ cast.name }}
                                                             </div>
-                                                        </div>
-                                                        <div class="card-body row">
-                                                            <div class="col-sm-auto">
-    
+                                                            {% endfor %}
+
+                                                            {% for score in movie.musicscores %}
+                                                            <div class="row">
+                                                                {{ score.title }} - {{ score.composer }}
                                                             </div>
+                                                            {% endfor %}
+
+                                                            {% for award in movie.awards %}
+                                                            <div class="row">
+                                                                {{ award.award_name }} - {{ award.year }} : {% if award.did_win %} Won {% else %} Nominated {% endif %}
+                                                            </div>
+                                                            {% endfor %}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -123,13 +152,7 @@
                                     </div>
                                 </div>
                             </div>
-    
-                            <div class="card-footer">
-                                <form method="post" action="{% url 'mainapp:add_watchlist' %}">
-                                    {% csrf_token %}
-                                    
-                                </form>
-                            </div>
+
                         </div>
                     {% endfor %}
                 </div>
