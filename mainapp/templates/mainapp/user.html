@@ -9,17 +9,17 @@
     <table class="table table-striped">
         <thead>
             <tr>
-            <th scope="col">Movie Title</th>
-            <th scope="col">Score</th>
-            <th scope="col">Review Title</th>
-            <th scope="col">Review</th>
+            <th scope="col-md-4">Movie Title</th>
+            <th scope="col-md-4">Score</th>
+            <th scope="col-md-4">Review Title</th>
+            <th scope="col-4 text-truncate" style="width: 50%">Review</th>
             </tr>
         </thead>
         <tbody>
         {% for movie in movies %}
             {% for review in reviews %}
                 {% if movie.0 == review.0 %}
-                <tr>
+                <tr style="width: 50%"">
                     <th scope ="row">
                         <a href="{% url 'mainapp:view_review' movie.0 review.1 %}">
                             {{ movie.1 }}
@@ -27,7 +27,7 @@
                     </th>
                     <td>{{ review.2 }}</td>
                     <td>{{ review.3 }}</td>
-                    <td class ="d-block text-truncate" alt="Max-width 100%">{{ review.4 }}</td>
+                    <td style="width: 10%">{{ review.4 }}</td>
                 </tr>
                 {% endif %}
             {% endfor %}
