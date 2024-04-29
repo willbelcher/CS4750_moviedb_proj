@@ -36,13 +36,14 @@ def user_login(request):
 
 def create_account(request):
     if request.method == "POST":
-        email = request.POST["email"]
-        name = request.POST['name']
-        password = request.POST["password"]
+        email = request.POST.get("email")
+        name = request.POST.get('name')
+        number = request.POST.get("phone number")
+        password = request.POST.get("password")
 
         hashed_password = make_password(password)
 
-        success = db_utils.add_user(email, name, hashed_password)
+        success = db_utils.add_user(email, name, number, hashed_password)
 
         if not success:
             return render(request, 'mainapp/create_account.html', {'errormsg': 'email already exists'})
@@ -76,17 +77,27 @@ def search_movies(request):
 
     return render(request, 'mainapp/search_movies.html', context={'scores': scores, 'movies': movies})
 
+@login_required
 def add_watchlist(request, movie_id, next):
     db_utils.add_movie_to_watchlist(request.user.email, movie_id)
     return redirect(next)
 
+@login_required
 def add_watched(request, movie_id, next):
     db_utils.add_movie_to_watched(request.user.email, movie_id)
     return redirect(next)
 
+@login_required
 def search_users(request):
-    pass
+    users = []
 
+    if request.method == "POST":
+        name = request.POST.get("name")
+        users = db_utils.get_users(name)
+        
+    return render(request, 'mainapp/search_users.html', context={'users': users})
+
+@login_required
 def list_movie_reviews(request, movie_id):
     if db_utils.get_movie(movie_id) is None:
         return redirect('mainapp:home')
@@ -96,6 +107,7 @@ def list_movie_reviews(request, movie_id):
 
     return render(request, 'mainapp/movie.html', {"reviews":reviews, "movie":movie})
 
+@login_required
 def list_user_reviews(request, usr):
     if db_utils.get_user(usr) is None:
         return redirect('mainapp:home')
@@ -107,6 +119,7 @@ def list_user_reviews(request, usr):
 
     return render(request, 'mainapp/user.html', {"reviews":reviews, "movies":movies})
 
+@login_required
 def list_user_watchlist(request):
     pass
 
@@ -124,6 +137,7 @@ def new_review(request, movie_id):
 
     return render(request, 'mainapp/new_review.html', {"movie": movie})
 
+@login_required
 def delete_review(request):
     pass
 
