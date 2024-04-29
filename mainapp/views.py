@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from mainapp import db_utils
 
 @login_required
@@ -69,7 +70,7 @@ def search_movies(request):
 
         if len(min_score) == 0: min_score = None
 
-        movies = db_utils.get_movies_full(title, min_score, get_watched=request.user.email, get_watchlist=request.user.email)
+        movies = db_utils.get_movies_full(title, min_score, get_watched=request.user.email, get_watchlist=request.user.email, get_reviewed=request.user.email)
         
 
     scores = list(range(0, 101))[::-1]
@@ -139,16 +140,35 @@ def new_review(request, movie_id):
 
 def view_review(request, movie_id, usr):
     review = db_utils.get_review(movie_id, usr)
-
     movie = db_utils.get_movie(movie_id)
 
-    return render(request, 'mainapp/view_review.html', {"review":review, "movie":movie})
+    if str(request.user) == str(usr):
+        allow_edit = True
+    else:
+        allow_edit = False
+
+    return render(request, 'mainapp/view_review.html', {"review":review, "movie":movie, "allow_edit":allow_edit})
     
 
 
 @login_required
-def delete_review(request):
-    pass
+def delete_review(request, movie_id):
+    db_utils.delete_review(movie_id, request.user)
+    return redirect('mainapp:home')
 
-def modify_review(request):
-    pass
+@login_required
+def edit_review(request, movie_id):
+    usr = request.user
+    movie = db_utils.get_movie(movie_id)
+
+    review = db_utils.get_review(movie_id, usr)
+
+    if review is None:
+        return redirect(reverse('mainapp:new_review', args=[movie_id]))
+
+    if request.method == "POST":
+        db_utils.update_review(movie_id, usr, request.POST.get("score"), 
+                            request.POST.get("reviewTitle"), request.POST.get("written-review"))
+        return redirect('mainapp:home')
+    
+    return render(request, 'mainapp/edit_review.html', {"movie": movie})
