@@ -51,7 +51,7 @@ def get_reviews_by_user(email, limit=25):
 def get_movie(id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM movie WHERE movie_id=%s", [id])
-        movie =  cursor.fetchone()
+        movie = cursor.fetchone()
 
         if movie is not None:
             return movie
@@ -114,4 +114,18 @@ def add_movie_to_watched(email, movie_id):
 def get_reviews_by_movie(id, limit=25):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM reviews WHERE movie_id =%s LIMIT %s", [id, limit])
+    
+def get_watchlist(email, limit=25):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM watchlist JOIN movie WHERE email =%s LIMIT %s", [email, limit])
         return cursor.fetchall()
+    
+def get_watched(email, limit=25):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM watched JOIN movie WHERE email =%s LIMIT %s", [email, limit])
+        return cursor.fetchall()
+    
+def add_review(movie_id, email, score, title, written_review):
+    with connection.cursor() as cursor:
+        cursor.execute("INSERT INTO reviews (movie_id, email, score, title, written_review) VALUES (%s, %s, %s, %s, %s)", [movie_id, email, score, title, written_review])
+    return

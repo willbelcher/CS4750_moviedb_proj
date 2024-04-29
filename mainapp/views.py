@@ -6,8 +6,18 @@ from mainapp import db_utils
 
 @login_required
 def home(request): # user home page (reviews, watched, watchlist)
+    user = request.user
 
-    return render(request, 'mainapp/home.html')
+    reviews = db_utils.get_reviews_by_user(user)
+    movies = []
+    for review in reviews:
+        movies.append(db_utils.get_movie(review[0]))
+
+    watchlist = db_utils.get_watchlist(user)
+
+    watched = db_utils.get_watched(user)
+
+    return render(request, 'mainapp/home.html', {"email": user, "reviews":reviews, "movies":movies, "watchlist": watchlist, "watched": watched})
 
 def user_login(request):
     if request.method == "POST":
@@ -100,8 +110,17 @@ def list_user_reviews(request, usr):
 def list_user_watchlist(request):
     pass
 
-def add_review(request):
-    pass
+@login_required
+def new_review(request, movie_id):
+    if db_utils.get_movie(movie_id) is None:
+        return redirect('mainapp:home')
+    
+    movie = db_utils.get_movie(movie_id)
+
+    if request.method == "POST":
+        db_utils.add_review(movie_id, request.user, request.POST.get("score", None), request.POST.get("title", None), request.POST.get("written_review", None))
+
+    return render(request, 'mainapp/new_review.html', {"movie": movie})
 
 def delete_review(request):
     pass
