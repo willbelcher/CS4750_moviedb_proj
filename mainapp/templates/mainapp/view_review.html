@@ -1,0 +1,15 @@
+{% include "nav.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <div class="d-flex justify-content-center">
+        <header><b> Review for "{{ movie.1 }}" by {{review.1}} </b></header>
+    </div>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container justify-content-center">
+          <h1 class="display-4">{{ review.3 }}</h1>
+          <h2 class="dispaly-4">{{ review.2 }}</h2>
+          <p class="lead">{{ review.4 }}</p>
+        </div>
+      </div>
+</html>
