@@ -27,4 +27,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy local code to the container image.
 COPY . .
 
-CMD exec python manage.py runserver 0.0.0.0:$PORT
+CMD exec ./manage.py runserver 0.0.0.0:$PORT
