@@ -58,7 +58,7 @@ def search_movies(request):
 
         if len(min_score) == 0: min_score = None
 
-        movies = db_utils.get_movies(title, min_score)
+        movies = db_utils.get_movies_full(title, min_score)
         
 
     scores = list(range(0, 101))[::-1]

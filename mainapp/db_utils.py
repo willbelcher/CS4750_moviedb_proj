@@ -75,7 +75,7 @@ def get_movies_full(title=False, min_score=False, limit=30):
     with connection.cursor() as cursor:
         for i, movie in enumerate(movies):
             cursor.execute("SELECT genre_name FROM movie_genre WHERE movie_id=%s LIMIT %s", [movie['movie_id'], limit])
-            movies[i]['genres'] = dictfetchall(cursor)
+            movies[i]['genres'] = ', '.join(x['genre_name'] for x in dictfetchall(cursor))
             cursor.execute("SELECT role, name FROM movie_cast WHERE movie_id=%s LIMIT %s", [movie['movie_id'], limit])
             movies[i]['cast'] = dictfetchall(cursor)
             cursor.execute("SELECT title, composer FROM movie_musicscores WHERE movie_id=%s LIMIT %s", [movie['movie_id'], limit])
