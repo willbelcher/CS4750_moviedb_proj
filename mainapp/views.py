@@ -67,8 +67,11 @@ def list_user_reviews(request, usr):
         redirect('mainapp:myreviews')
 
     reviews = db_utils.get_reviews_by_user(usr)
+    movies = []
+    for review in reviews:
+        movies.append(db_utils.get_movies_by_id(review[0]))
 
-    return render(request, 'mainapp/user.html', {"reviews":reviews})
+    return render(request, 'mainapp/user.html', {"reviews":reviews, "movies":movies})
 
 def list_user_watchlist(request):
     pass
