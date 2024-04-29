@@ -37,9 +37,9 @@ def create_account_view(request):
 
 # handles account insertion into db
 def create_account(request):
-    email = request.POST["email"]
-    name = request.POST['name']
-    password = request.POST["password"]
+    email = request.POST.get("email", None)
+    name = request.POST.get('name', None)
+    password = request.POST.get("password", None)
 
     success = db_utils.add_user(email, name, password)
 
