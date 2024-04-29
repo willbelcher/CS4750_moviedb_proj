@@ -73,7 +73,13 @@ def search_users(request):
     pass
 
 def list_movie_reviews(request, movie_id):
-    pass
+    if db_utils.get_movie(movie_id) is None:
+        return redirect('mainapp:home')
+    
+    movie = db_utils.get_movie(movie_id)
+    reviews = db_utils.get_reviews_by_movie(movie_id)
+
+    return render(request, 'mainapp/movie.html', {"reviews":reviews, "movie":movie})
 
 def list_user_reviews(request, usr):
     if db_utils.get_user(usr) is None:

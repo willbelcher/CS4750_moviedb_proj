@@ -52,7 +52,7 @@ def get_movie(id):
     
     return None
 
-def get_reviews_by_movie(title, limit=25):
+def get_reviews_by_movie(id, limit=25):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT r.score, r.title, r.written_review FROM reviews r WHERE r.movie_id = (SELECT movie_id FROM movie WHERE title =%s LIMIT %s", [title, limit])
+        cursor.execute("SELECT * FROM reviews WHERE movie_id =%s LIMIT %s", [id, limit])
         return cursor.fetchall()
